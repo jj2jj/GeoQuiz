@@ -12,31 +12,29 @@ import android.widget.Toast;
 public class GeoQuiz extends AppCompatActivity {
     private static final String TAG = "GQ";
     private static final String KEY_INDEX="index";
+    private static final String KEY_INDEX2="index2";
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mNextButton;
     private Button mCheatButton;
     private TextView mTx;
+    private boolean mIsCheater;
+    private int mCurrentIndex = 0;
+
     public TrueFalse[] mQuestionBank = new TrueFalse[]{
             new TrueFalse(R.string.question_americas,true),
             new TrueFalse(R.string.question_oceans,true),
             new TrueFalse(R.string.question_turkey,false),
     };
 
-    private boolean mIsCheater;
-
-    private int mCurrentIndex = 0;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null){
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX,0);
+            mIsCheater = savedInstanceState.getBoolean(KEY_INDEX2,false);
         }
         setContentView(R.layout.activity_geo_quiz4);
-
-
         mTx = (TextView) findViewById(R.id.question_text);
         updateQuestion();
 
@@ -59,7 +57,16 @@ public class GeoQuiz extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mCurrentIndex = (mCurrentIndex+1)%mQuestionBank.length;
-                mIsCheater = false;//查看下一题时要将其置为false
+               // mIsCheater = false;//查看下一题时要将其置为false
+                switch (view.getId()) {
+                    case R.id.true_btn:
+                        mIsCheater = false;
+                        break;
+                    case R.id.false_btn:
+                        mIsCheater = false;
+                        break;
+                }
+                //mIsCheater = false;
                 updateQuestion();
             }
         });
@@ -80,6 +87,7 @@ public class GeoQuiz extends AppCompatActivity {
         super.onSaveInstanceState(saveInstanceState);
         Log.i(TAG,"onSaveInstanceState");
         saveInstanceState.putInt(KEY_INDEX,mCurrentIndex);
+        saveInstanceState.putBoolean(KEY_INDEX2,mIsCheater);
     }
 
 
@@ -89,6 +97,7 @@ public class GeoQuiz extends AppCompatActivity {
             return;
         }
         mIsCheater = data.getBooleanExtra(CheatActivity.EXTRA_ANSWER_SHOWN,false);
+
     }
 
 
