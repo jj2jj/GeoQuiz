@@ -2,6 +2,7 @@ package com.example.jessica0906zjj.geographicquiz;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -20,12 +21,21 @@ public class CheatActivity extends AppCompatActivity {
 
     private boolean mAnswerIsTrue;
     private TextView mTx;
+    private TextView mApiTx;
     private Button mShowAnswer;
     boolean mShowAnswerPressed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheat);
+
+        int currentapiVersion= Build.VERSION.SDK_INT;
+
+        Log.i("AAAAAA","currentapiVersion");
+
+        mApiTx = (TextView) findViewById(R.id.apiTextView);
+        mApiTx.setText("API Level:"+ String.valueOf(currentapiVersion));
+
         mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE,false);
         mTx = (TextView) findViewById(R.id.answerTextView);
         //SharedPreferences本身是一个接口，无法直接创建实例，通过Context的getSharedPreferences(String name, int  mode)方法来获取实例。
